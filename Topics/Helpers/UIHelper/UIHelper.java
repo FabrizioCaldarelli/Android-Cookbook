@@ -9,10 +9,10 @@ import android.support.v7.app.AlertDialog;
 /**
  UIHelper
  @author Fabrizio Caldarelli
- @version 1
+ @version 2
  */
 public class UIHelper {
- 
+
     // Show waiter
     public static ProgressDialog showWaiter(Context ctx) { return showWaiter(ctx, null); }
     public static ProgressDialog showWaiter(Context ctx, String message)
@@ -58,5 +58,33 @@ public class UIHelper {
         return ad;
     }
 
+    public static AlertDialog showAlertYesNo(Context ctx, String title, String message, final UIHelperAlertYesNoListener listener)
+    {
+        AlertDialog ad = new AlertDialog.Builder(ctx)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(R.string.uihelper_alertok_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(listener!=null) listener.uiHelperAlertYesNoResponse(true);
+                    }
+                })
+                .setPositiveButton(R.string.uihelper_alertok_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(listener!=null) listener.uiHelperAlertYesNoResponse(false);
+                    }
+                })
+                .create();
 
+        ad.show();
+
+        return ad;
+    }
+
+    public interface UIHelperAlertYesNoListener
+    {
+        void uiHelperAlertYesNoResponse(boolean response);
+    }
 }
+
